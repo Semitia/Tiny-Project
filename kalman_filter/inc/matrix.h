@@ -61,7 +61,7 @@ Matrix_t add_matrix(Matrix_t m1, Matrix_t m2)
  * @param m2 
  * @return Matrix_t
  */
-Matrix_t multiply_matrix(Matrix_t m1, Matrix_t m2)
+Matrix_t mul_matrix(Matrix_t m1, Matrix_t m2)
 {
     //if (m1->n != m2->m) {return 0;}
     Matrix_t ans;
@@ -78,6 +78,12 @@ Matrix_t multiply_matrix(Matrix_t m1, Matrix_t m2)
             ans.matrix[i][j] = sum;
         }
     }
+    return ans;
+}
+
+Matrix_t inv_matrix(Matrix_t M)
+{
+    Matrix_t ans;
     return ans;
 }
 
