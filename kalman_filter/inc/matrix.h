@@ -5,7 +5,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-//#define Matrix_MX 10
+#define INV 2
 
 /**
  * @brief 
@@ -16,19 +16,22 @@
 typedef struct __Matrix_t{
     int m;
     int n;
-    double matrix[3][3];//matrix[Matrix_MX][Matrix_MX];
+    double matrix[INV][INV];//matrix[Matrix_MX][Matrix_MX];
 }Matrix_t;
 
 Matrix_t get_I(int t);
 Matrix_t inv_matrix(Matrix_t M);
 Matrix_t tran_matrix(Matrix_t M);
+Matrix_t matrix_init2(int m, int n);
 void swap_col(int i, int j, Matrix_t *M);
 void swap_row(int i, int j, Matrix_t *M);
+void fprintf_matrix(Matrix_t *mat, FILE *fp);
 Matrix_t add_matrix(Matrix_t m1, Matrix_t m2);
+Matrix_t sub_matrix(Matrix_t m1, Matrix_t m2);
 Matrix_t mul_matrix(Matrix_t m1, Matrix_t m2);
 void add_row(int i, int j, double k, Matrix_t *M);
 void add_col(int i, int j, double k, Matrix_t *M);
-Matrix_t matrix_init(int m, int n, double matrix[][3]);
+Matrix_t matrix_init(int m, int n, double matrix[][INV]);
 
 
 /**
@@ -49,6 +52,24 @@ void printf_matrix(Matrix_t *Mat)
 }
 
 /**
+ * @brief printf the matrix data to a file
+ * 
+ * @param mat 
+ * @param fp 
+ */
+void fprintf_matrix(Matrix_t *mat, FILE *fp)
+{
+    int i,j;
+    for(i=0; i<mat->m; i++)
+    {
+        for(j=0; j<mat->n; j++)
+        { fprintf(fp,"%.3f\t",mat->matrix[i][j]); }
+        fprintf(fp,"\n");
+    }
+    return;
+}
+
+/**
  * @brief 
  * 
  * @param m1 
@@ -62,6 +83,17 @@ Matrix_t add_matrix(Matrix_t m1, Matrix_t m2)
     {
         for(j=0; j<m1.n; j++)
         { m1.matrix[i][j] += m2.matrix[i][j]; }
+    }
+    return m1;
+}
+
+Matrix_t sub_matrix(Matrix_t m1, Matrix_t m2)
+{
+    int i,j;
+    for(i=0; i<m1.m; i++)
+    {
+        for(j=0; j<m1.m; j++)
+        { m1.matrix[i][j] -= m2.matrix[i][j]; }
     }
     return m1;
 }
@@ -100,7 +132,7 @@ Matrix_t mul_matrix(Matrix_t m1, Matrix_t m2)
  */
 Matrix_t inv_matrix(Matrix_t M)
 {
-    printf_matrix(&M);
+    //printf_matrix(&M);
     Matrix_t ans, I;
     int t = M.m, j, k, l;
     double tem;
@@ -121,14 +153,7 @@ Matrix_t inv_matrix(Matrix_t M)
         }
         //消去之后每一行的第j项
         for(k=j+1; k<t; k++)
-        { 
-            /*
-            for(l=t-1; l>=0; l--)
-            {
-                M.matrix[k][l] -= M.matrix[j][l]*M.matrix[k][j]; 
-                I.matrix[k][l] -= I.matrix[j][l]*M.matrix[k][j]; 
-            }
-            */
+        {
             //M.matrix[k][j] would be changed, I should be operated before M.
             add_row(j,k,-M.matrix[k][j],&I);           
             add_row(j,k,-M.matrix[k][j],&M);
@@ -141,20 +166,15 @@ Matrix_t inv_matrix(Matrix_t M)
         {
             tem = M.matrix[k][j];
             M.matrix[k][j] -= M.matrix[j][j]*tem;
-            /*
-            for(l=0; l<t; l++)
-            {
-                I.matrix[k][l] -= I.matrix[j][l]*tem;
-            }
-            */
             add_row(j, k, -tem, &I);
         }
     }
     //printf_matrix(&M);
-    printf_matrix(&I);
+    //printf_matrix(&I);
     return I;
 }
 
+/*
 void test_inv(void)
 {
     double te[3][3] = {{0,2,-1},{1,1,2},{-1,-1,-1}};
@@ -163,6 +183,7 @@ void test_inv(void)
     inv_matrix(test);
     return;
 }
+*/
 
 /**
  * @brief 返回转置矩阵
@@ -183,7 +204,7 @@ Matrix_t tran_matrix(Matrix_t M)
     return ans;
 }
 
-Matrix_t matrix_init(int m, int n, double matrix[][3])
+Matrix_t matrix_init(int m, int n, double matrix[][INV])
 {
     int i,j;
     Matrix_t ans;
@@ -194,6 +215,15 @@ Matrix_t matrix_init(int m, int n, double matrix[][3])
         for(j=0; j<n; j++)
         { ans.matrix[i][j] = matrix[i][j]; }
     }
+    return ans;
+}
+
+Matrix_t matrix_init2(int m, int n)
+{
+    int i,j;
+    Matrix_t ans;
+    ans.m = m;
+    ans.n = n;
     return ans;
 }
 
