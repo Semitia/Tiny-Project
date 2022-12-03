@@ -26,7 +26,10 @@ void swap_col(int i, int j, Matrix_t *M);
 void swap_row(int i, int j, Matrix_t *M);
 Matrix_t add_matrix(Matrix_t m1, Matrix_t m2);
 Matrix_t mul_matrix(Matrix_t m1, Matrix_t m2);
+void add_row(int i, int j, double k, Matrix_t *M);
+void add_col(int i, int j, double k, Matrix_t *M);
 Matrix_t matrix_init(int m, int n, double matrix[][3]);
+
 
 /**
  * @brief printf the Matrix
@@ -119,11 +122,16 @@ Matrix_t inv_matrix(Matrix_t M)
         //消去之后每一行的第j项
         for(k=j+1; k<t; k++)
         { 
+            /*
             for(l=t-1; l>=0; l--)
             {
                 M.matrix[k][l] -= M.matrix[j][l]*M.matrix[k][j]; 
                 I.matrix[k][l] -= I.matrix[j][l]*M.matrix[k][j]; 
             }
+            */
+            //M.matrix[k][j] would be changed, I should be operated before M.
+            add_row(j,k,-M.matrix[k][j],&I);           
+            add_row(j,k,-M.matrix[k][j],&M);
         }
     }
     //从后往前消去每一行的第j项
@@ -133,10 +141,13 @@ Matrix_t inv_matrix(Matrix_t M)
         {
             tem = M.matrix[k][j];
             M.matrix[k][j] -= M.matrix[j][j]*tem;
+            /*
             for(l=0; l<t; l++)
             {
                 I.matrix[k][l] -= I.matrix[j][l]*tem;
             }
+            */
+            add_row(j, k, -tem, &I);
         }
     }
     //printf_matrix(&M);
@@ -223,6 +234,30 @@ void swap_col(int i, int j, Matrix_t *M)
         M->matrix[k][i] = M->matrix[k][j];
         M->matrix[k][j] = t;
     }
+    return;
+}
+
+/**
+ * @brief 第i行乘上k加到第j行
+ * 
+ * @param i 
+ * @param j 
+ * @param k 
+ * @param M 
+ */
+void add_row(int i, int j, double k, Matrix_t *M)
+{
+    int t;
+    for(t=0; t<M->n; t++)
+    { M->matrix[j][t] += M->matrix[i][t]*k; }
+    return;
+}
+
+void add_col(int i, int j, double k, Matrix_t *M)
+{
+    int t;
+    for(t=0; t<M->m; t++)
+    { M->matrix[t][j] += M->matrix[t][i]*k; }
     return;
 }
 
