@@ -23,8 +23,8 @@ for i=1:n
 end
 
 a = FAI\B;
-disp(m);
-disp(FAI);
-disp(B);
+% disp(m);
+% disp(FAI);
+% disp(B);
 end
 
