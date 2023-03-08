@@ -1,5 +1,5 @@
 #include "encoder.h"
-
+#include "usart.h"
 /**************************************************************************
 函数功能：把TIM2初始化为编码器接口模式
 入口参数：无
@@ -10,9 +10,12 @@ void Encoder_Init_TIM2(void)
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;  
   TIM_ICInitTypeDef TIM_ICInitStructure;  
   GPIO_InitTypeDef GPIO_InitStructure;
-  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);//使能定时器4的时钟
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_AFIO, ENABLE);
+  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB, ENABLE);
+	//remap
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 	GPIO_PinRemapConfig(GPIO_FullRemap_TIM2, ENABLE);
+	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable , ENABLE);
 	
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;	//端口配置
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING; //浮空输入
@@ -155,6 +158,8 @@ int Read_Encoder(u8 TIMX)
 		 case 5:  Encoder_TIM= (short)TIM5 -> CNT;  TIM5 -> CNT=0;break;			 
 		 default: Encoder_TIM=0;
 	 }
+	 if(Encoder_TIM!=0) 
+	 {printf("encoder%d = %d\r\n",TIMX,Encoder_TIM);}
 		return Encoder_TIM;
 }
 

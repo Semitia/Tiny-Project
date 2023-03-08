@@ -564,12 +564,11 @@ ARM Macro Assembler    Page 9
               00000200 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
-ork --depend=..\obj\startup_stm32f10x_hd.d -o..\obj\startup_stm32f10x_hd.o -I"C
-:\Users\Semitia\Desktop\DeskTop\ALIENTEK MINISTM32 实验8 PWM输出实验\USER\RTE" 
--ID:\WORK\MCU\STM32\MDK\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include -ID:\W
-ORK\MCU\STM32\MDK\ARM\CMSIS\Include --predefine="__UVISION_VERSION SETA 521" --
-predefine="STM32F10X_HD SETA 1" --list=.\startup_stm32f10x_hd.lst ..\CORE\start
-up_stm32f10x_hd.s
+ork --depend=..\obj\startup_stm32f10x_hd.d -o..\obj\startup_stm32f10x_hd.o -IC:
+\Users\Semitia\Desktop\DeskTop\大创\USER\RTE -ID:\WORK\MCU\STM32\MDK\ARM\PACK\K
+eil\STM32F1xx_DFP\2.2.0\Device\Include -ID:\WORK\MCU\STM32\MDK\ARM\CMSIS\Includ
+e --predefine="__UVISION_VERSION SETA 521" --predefine="STM32F10X_HD SETA 1" --
+list=.\startup_stm32f10x_hd.lst ..\CORE\startup_stm32f10x_hd.s
 
 
 

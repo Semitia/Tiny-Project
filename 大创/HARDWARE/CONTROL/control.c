@@ -4,6 +4,10 @@
 
 u8 i;
 int Motor_pwm[4];
+int motor_Kp=150; 
+int motor_Ki=120;    //电机转速PID-I
+int motor_Kd=80; 
+
 const float Kx[4] = {0,0,0,0}, Ky[4] = {0,0,0,0};
 float target_wheel[4]={0,0,0,0}, real_wheel[4];
 float target_Vx=0, target_Vy=0, target_W=0;
@@ -23,7 +27,7 @@ void Forward(void)
 	for(i=0;i<4;i++)
 	target_wheel[i] = target_Vx*Kx[i] + target_Vy*Ky[i];
 	
-	printf("DEBUG-target_wheel: A %.2f, B %.2f, C %.2f, D %.2f\r\n",target_wheel[0],target_wheel[1],target_wheel[2],target_wheel[3]);
+	//printf("DEBUG-target_wheel: A %.2f, B %.2f, C %.2f, D %.2f\r\n",target_wheel[0],target_wheel[1],target_wheel[2],target_wheel[3]);
 	return;
 }
 
@@ -64,7 +68,7 @@ void PID(float *target, float *real, int *pwm)
 		else if(my_abs_f(bias[i]) < I_up)
 		{ bias_integral[i] += ((my_abs_f(bias[i]) - I_low)/(I_up - I_low))*((bias[i] +  bias_last[i])/2 ); }
 		//PID计算电机输出PWM值
-		pwm[i] = (int) ax_motor_kp*bias[i]*PID_SCALE + ax_motor_kd*(bias[i]-bias_last[i])*PID_SCALE + ax_motor_ki*bias_integral[i]*PID_SCALE;
+		pwm[i] = (motor_Kp*bias[i] + motor_Kd*(bias[i]-bias_last[i]) + motor_Ki*bias_integral[i] )*PID_SCALE;
 		//记录上次偏差
 		bias_last[i] = bias[i];
 		//限制最大输出
@@ -98,7 +102,7 @@ void Set_Pwm(int *pwm)
 	PWMB=my_abs_i(pwm[3]);		
 }
 
-void sendmsg(void)
+void send_msg(void)
 {
 	char buf[20];
 
@@ -148,6 +152,17 @@ void sendmsg(void)
 		}
 	}
 	*/
+	return;
+}
+
+void state_info(void)
+{
+	printf("X:%.2f, Y:%.2f, Yaw:%.2f\r\n",x,y,yaw);
+	printf("target_speed--Vx:%.2f, Vy:%.2f, W:%.2f\r\n",target_Vx,target_Vy,target_W);
+	printf("target_wheel--A:%.2f,B:%.2f, C:%.2f, D:%.2f\r\n",target_wheel[0],target_wheel[1],target_wheel[2],target_wheel[3]);	
+	printf("real_wheel----A:%.2f,B:%.2f, C:%.2f, D:%.2f\r\n",real_wheel[0],real_wheel[1],real_wheel[2],real_wheel[3]);
+	printf("PWM_output----A:%d,B:%d, C:%d, D:%d\r\n",Motor_pwm[0],Motor_pwm[1],Motor_pwm[2],Motor_pwm[3]);
+	printf("\r\n");
 	return;
 }
 

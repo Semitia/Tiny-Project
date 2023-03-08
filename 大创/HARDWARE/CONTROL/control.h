@@ -16,9 +16,6 @@
 
 #define I_up 80
 #define I_low 55
-#define ax_motor_kp 100; 
-#define ax_motor_ki 120;    //���ת��PID-I
-#define ax_motor_kd 80; 
 #define PID_SCALE  0.1f  //PID����ϵ��
 
 #define PWMA   TIM8->CCR1  //PC6
@@ -41,9 +38,10 @@ void PID(float *target, float *real, int *pwm);
 void Set_Pwm(int *pwm);
 
 void data_receive(void);
-void sendmsg(void);
+void send_msg(void);
 void state_info(void);
 
+extern float target_wheel[4];
 extern float target_Vx, target_Vy, target_W;
 extern float target_Px, target_Py, target_yaw;
 #endif
