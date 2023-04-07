@@ -8,7 +8,7 @@ int motor_Kp=150;
 int motor_Ki=120;    //电机转速PID-I
 int motor_Kd=80; 
 
-const float Kx[4] = {0,0,0,0}, Ky[4] = {0,0,0,0};
+const float Kx[4] = {1,-1,-1,1}, Ky[4] = {1,1,1,1};
 float target_wheel[4]={0,0,0,0}, real_wheel[4];
 float target_Vx=0, target_Vy=0, target_W=0;
 float target_Px=0, target_Py=0, target_yaw=0;
