@@ -42,6 +42,7 @@ void send_msg(void);
 void state_info(void);
 
 extern float target_wheel[4];
+extern int Motor_pwm[4];
 extern float target_Vx, target_Vy, target_W;
 extern float target_Px, target_Py, target_yaw;
 #endif

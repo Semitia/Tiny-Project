@@ -29,12 +29,13 @@
  		if(led0pwmval>300)dir=0;
 		if(led0pwmval==0)dir=1;	   					 
 		TIM_SetCompare1(TIM1,led0pwmval);	  
-		/*
+		/*		
 		TIM_SetCompare1(TIM8,led0pwmval);	  
 		TIM_SetCompare2(TIM8,led0pwmval);	  
 		TIM_SetCompare3(TIM8,led0pwmval);	  
 		TIM_SetCompare4(TIM8,led0pwmval);	  
 		*/
+		
 		data_receive();
 		Move_Ctrl();
 		//send_msg();

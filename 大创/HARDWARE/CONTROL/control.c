@@ -16,9 +16,10 @@ float x=0,y=0,yaw=1.57;
 
 void Move_Ctrl(void)
 {
-	Forward();
-	Inverse();
-	PID(target_wheel,real_wheel,Motor_pwm);
+	//Forward();
+	//Inverse();
+	//PID(target_wheel,real_wheel,Motor_pwm);
+	
 	Set_Pwm(Motor_pwm);
 }
 
